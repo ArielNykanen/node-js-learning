@@ -20,3 +20,8 @@
   - path options
   - creating public folder with static access
   - sending html files as response
+
+## practice - 4
+  ### Templating Engines
+  - ejs template engine
+  - transferring/exporting data with post requests
