@@ -1,7 +1,7 @@
 const path = require('path');
 const rootDir = require('./util/path')
 const express = require('express');
-  // routing exports dont need to be in order unless you use "use"
+  // routing exports dont need to be in order unless you use "use" in the routes
 const userRouting = require('./routes/user');
 const homeRouting = require('./routes/home');
 app = express();
