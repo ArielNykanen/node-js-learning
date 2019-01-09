@@ -1,0 +1,16 @@
+.nav-bar .nav-bar-ul .nav-bar-li, .nav-bar-li a, .nav-bar .nav-bar-ul {
+  display: flex;
+  text-decoration: none;
+  list-style: none;
+}
+.nav-bar .nav-bar-li {
+  margin: 0 1rem;
+}
+
+.nav-bar, a {
+  background-color: rgb(122, 137, 151);
+  color: white;
+}
+nav {
+  display: flex;
+}

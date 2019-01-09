@@ -1,0 +1,20 @@
+<%- include("includes/head") %>
+
+<%- include("includes/navigation") %>
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+<h1 align=center>Home Page</h1>
+
+<form action="/create-user" method="POST">
+  <label for="un">Add User Name</label>
+  <input type="text" name="username" id="un">
+  <br>
+  <label for="ul">Add Last Name</label>
+  <input type="text" name="lastname" id="ul">
+  <br>
+  <button type="submit">Add User</button>
+</form>
+<%- include("includes/end") %>
+  
