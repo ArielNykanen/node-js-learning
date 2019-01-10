@@ -6,8 +6,12 @@ const router = express.Router();
 
 router.get('/add-product', productsCtrl.getAddProduct);
 
+router.get('/products', productsCtrl.getAdminProducts);
+
 router.post('/add-product', productsCtrl.postAddProduct);
 
-router.get('/admin-products', productsCtrl.getAdminProducts);
+router.get('/edit-product/:productId', productsCtrl.getEditProduct)
+
+router.post('/edit-product', productsCtrl.postEditProduct)
 
 module.exports = router;
