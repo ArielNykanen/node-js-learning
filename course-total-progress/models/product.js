@@ -27,6 +27,9 @@ module.exports = class Product {
   }
 
   save() {
+    // adding temp id method
+    // todo need to be changed
+    this.id = Math.random().toString();
    getProductsFromFile(products => {
     products.push(this);
     fs.writeFile(p, JSON.stringify(products), (err) => {
