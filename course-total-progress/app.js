@@ -5,6 +5,7 @@ const app = express();
 
 const errorCtrl = require('./controllers/errors')
 
+
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 const adminRoute = require('./routes/admin');
