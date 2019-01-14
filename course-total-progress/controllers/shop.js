@@ -41,6 +41,6 @@ exports.getIndexPage = (req, res, next) => {
       hasProducts: products.length > 0,
       });
   }).catch(
-    err => console.log(err)
+    err => console.log(err) 
     );
 }

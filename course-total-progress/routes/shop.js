@@ -10,7 +10,8 @@ router.get('/cart', cartCtrl.getCart);
 router.post('/cart/add-product', cartCtrl.postCart); 
 router.post('/cart/delete-item', cartCtrl.postCartDeleteItem); 
 
-router.get('/checkout', cartCtrl.getCheckOut); 
+router.post('/create-order', cartCtrl.postOrder); 
+
 
 router.get('/products', shopCtrl.getProducts); 
 // when handeling dynamic params and adding products/something after the dynamic params as below
