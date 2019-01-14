@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/add-product', productsCtrl.getAddProduct);
 
-// router.get('/products', productsCtrl.getAdminProducts);
+router.get('/products', productsCtrl.getAdminProducts);
 
 router.post('/add-product', productsCtrl.postAddProduct);
 

@@ -80,7 +80,7 @@ exports.postAddProduct =  (req, res, next) => {
 
 
 exports.getAdminProducts = (req, res, next) => {
-  req.user.getProducts()
+  Product.fetchAll()
   .then((products) => {
     res.render('admin/products', {
       prods: products,
@@ -91,5 +91,4 @@ exports.getAdminProducts = (req, res, next) => {
   }).catch(
     err => console.log(err)
     );
- 
 }
