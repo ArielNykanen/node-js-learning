@@ -11,6 +11,7 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 const adminRoute = require('./routes/admin');
 const shopRoute = require('./routes/shop');
+const authRoute = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -26,6 +27,7 @@ User.findById('5c3d80aba19a09a4b557935e')
 
 app.use('/admin', adminRoute);
 app.use(shopRoute);
+app.use(authRoute);
 
 app.use(errorCtrl.get404);
 
