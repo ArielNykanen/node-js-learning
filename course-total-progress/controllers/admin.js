@@ -17,7 +17,10 @@ exports.postAddProduct =  (req, res, next) => {
     title: title, 
     price: price, 
     description: description, 
-    imageUrl: imageUrl
+    imageUrl: imageUrl,
+    // userId: req.user._id
+    // you can save the intire objec (mongoose automatically will pick the id from it)
+    userId: req.user
   });
     // save method comming from mongoose built in method
   product.save()
@@ -88,6 +91,11 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getAdminProducts = (req, res, next) => {
   Product.find()
+    // will select data like filter
+  //? .selet('title price -_id')
+    // populate will fetch data with all the data information and not only the id object
+      // next arguments will sellect/filter only the object keys as defined 
+  //? .populate('userId', 'name')
   .then((products) => {
     res.render('admin/products', {
       prods: products,
