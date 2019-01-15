@@ -29,10 +29,8 @@ app.use(shopRoute);
 
 app.use(errorCtrl.get404);
 
-mongoose.connect(('mongodb+srv://ariel:12131415@cluster0-4a0ak.mongodb.net/test?retryWrites=true')
-.then(result => {
+mongoose.connect('mongodb+srv://ariel:12131415@cluster0-4a0ak.mongodb.net/test?retryWrites=true').then(result => {
   app.listen(3000);
 }).catch(err => {
   console.log(err);
-}));
- 
+})
