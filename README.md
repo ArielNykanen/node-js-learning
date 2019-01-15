@@ -1,5 +1,21 @@
 # NodeJs learning progress
 
+# Total Progress
+ * Creation Of Node Server From Scratch
+ * Working With Files
+ * Understanding Of Middlewares
+ * Requests And Responses
+ * Debugging (syntax,runtime,logical) Errors With Visual Code Debugger
+ * Express Package
+ * Routing
+ * Template Engines ejs/handlebars/pug
+ * MVC Approach
+ * Understanding SQL(MySQL)
+ * Working With Sequelize
+ * Understanding MongoDB NoSQL Approach
+ * Working With Mongoose
+
+# Practices
 ## practice - 1
   ### Core NodeJs
   - creating of fresh NodeJs server with http core module
