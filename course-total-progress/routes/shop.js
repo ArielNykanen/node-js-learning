@@ -4,13 +4,14 @@ const express = require('express');
 const router = express.Router();
 router.get('/',  shopCtrl.getIndexPage); 
 
-router.get('/orders', cartCtrl.getOrders); 
+// router.get('/orders', cartCtrl.getOrders); 
 
 router.get('/cart', cartCtrl.getCart); 
 router.post('/cart/add-product', cartCtrl.postCart); 
 router.post('/cart/delete-item', cartCtrl.postCartDeleteItem); 
 
 router.post('/create-order', cartCtrl.postOrder); 
+router.get('/orders', cartCtrl.getOrders); 
 
 
 router.get('/products', shopCtrl.getProducts); 
