@@ -5,10 +5,10 @@ const productsCtrl = require('../controllers/admin');
 const router = express.Router();
 
 router.get('/add-product', productsCtrl.getAddProduct);
+router.post('/add-product', productsCtrl.postAddProduct);
+
 
 router.get('/products', productsCtrl.getAdminProducts);
-
-router.post('/add-product', productsCtrl.postAddProduct);
 
 router.get('/edit-product/:productId', productsCtrl.getEditProduct)
 

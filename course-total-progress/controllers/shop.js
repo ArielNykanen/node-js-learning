@@ -1,7 +1,7 @@
 const Product = require('../models/product');
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
   .then((products) => {
     res.render('shop/product-list', {
       prods: products,
@@ -16,7 +16,9 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.getById(prodId)
+    // findById is mongoose method =>
+      // automatically converting string to ObjectId()
+  Product.findById(prodId)
   .then(product => {
     console.log(product);
       res.render('shop/product-detail', {
@@ -28,20 +30,10 @@ exports.getProduct = (req, res, next) => {
   .catch(err => {
     console.log(err);
   });
-  // Product.findByPk(prodId)
-  // .then((product) => {
-  //   res.render('shop/product-detail', {
-  //     prod: product,
-  //     pageTitle: product.title,
-  //     path: "/products"
-  //   });
-  // })
-  // .catch(err => console.log(err)
-  // );
 }
 
 exports.getIndexPage = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
   .then((products) => {
     res.render('shop/index', {
       prods: products,

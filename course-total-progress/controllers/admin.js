@@ -13,7 +13,13 @@ exports.postAddProduct =  (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, price, description, imageUrl, null, req.user._id);
+  const product = new Product({
+    title: title, 
+    price: price, 
+    description: description, 
+    imageUrl: imageUrl
+  });
+    // save method comming from mongoose built in method
   product.save()
   .then(result => {
     console.log('Product Was Created!');
@@ -25,7 +31,9 @@ exports.postAddProduct =  (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const deletedProductId = req.body.productId;
-  Product.deleteById(deletedProductId)
+   // findByIdAndDelete is mongoose method =>
+      // automatically converting string to ObjectId()
+  Product.findByIdAndRemove(deletedProductId)
   .then(result => {
     console.log('Redirecting to admin/products...');
     res.redirect('/admin/products');
@@ -39,7 +47,9 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.getById(prodId)
+   // findById is mongoose method =>
+      // automatically converting string to ObjectId()
+  Product.findById(prodId)
   .then(product => {
     res.render('admin/edit-product', {
       pageTitle: "Editing Product", 
@@ -53,19 +63,20 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  console.log("the id is!!!" + prodId);
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDescription = req.body.description;
-  const product = new Product(
-    updatedTitle,
-    updatedPrice, 
-    updatedDescription, 
-    updatedImageUrl, 
-    prodId
-    );
-  product.save()
+   // findById is mongoose method =>
+      // automatically converting string to ObjectId()
+  Product.findById(prodId).then(product => {
+    product.title = updatedTitle;
+    product.price = updatedPrice;
+    product.description = updatedDescription;
+    product.imageUrl = updatedImageUrl;
+      // when using save on existing item it will automatically update the item
+    product.save();
+  })
   .then(result => {
     res.redirect('/admin/products');
     console.log(result);
@@ -76,7 +87,7 @@ exports.postEditProduct = (req, res, next) => {
 
 
 exports.getAdminProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
   .then((products) => {
     res.render('admin/products', {
       prods: products,
