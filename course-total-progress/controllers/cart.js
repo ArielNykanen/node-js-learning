@@ -1,19 +1,25 @@
 const Product = require('../models/product');
+const User = require('../models/user');
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart()
-  .then(products => {
-      res.render('shop/cart', {
-      pageTitle: "In Cart", 
-      path: '/cart',
-      products: products
+  req.user
+  .populate('cart.items.productId')
+  // populate will not return promise 
+   // need to use execPopulate to use then()
+  .execPopulate()
+  .then(user => {
+    const products = user.cart.items;    
+    res.render('shop/cart', {
+    pageTitle: "In Cart", 
+    path: '/cart',
+    products: products
     });
     }).catch(err => console.log(err))
 }
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.getById(prodId)
+  Product.findById(prodId)
   .then(product => {
     return req.user.addToCart(product);
   })

@@ -6,8 +6,8 @@ router.get('/',  shopCtrl.getIndexPage);
 
 // router.get('/orders', cartCtrl.getOrders); 
 
-// router.get('/cart', cartCtrl.getCart); 
-// router.post('/cart/add-product', cartCtrl.postCart); 
+router.get('/cart', cartCtrl.getCart); 
+router.post('/cart/add-product', cartCtrl.postCart); 
 // router.post('/cart/delete-item', cartCtrl.postCartDeleteItem); 
 
 // router.post('/create-order', cartCtrl.postOrder); 
