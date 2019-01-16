@@ -17,6 +17,7 @@
  * Cookies/Sessions
  * Basic Authentication (routes auth session-controlled login status on the server side)
  * Security against CSRF attacks (csurf), hashing passwords   (bcryptjs)
+ * Sending Emails With nodemailer and nodemailer-sendgrid-transport Package's
 
 # Practices
 ## practice - 1
