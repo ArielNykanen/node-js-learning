@@ -33,6 +33,7 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndexPage = (req, res, next) => {
+  
   Product.find()
   .then((products) => {
     res.render('shop/index', {
