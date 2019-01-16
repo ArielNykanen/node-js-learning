@@ -50,20 +50,8 @@ app.use(authRoute);
 
 app.use(errorCtrl.get404);
 
-mongoose.connect(MONGODB_URI).then(result => {
-
-  User.findOne().then(user => {
-    if (!user) {
-      const user = new User({
-        name: 'test',
-        email: 'test@test.com',
-        cart: {
-          items: []
-        }
-      });
-      user.save();
-    }
-  })
+mongoose.connect(MONGODB_URI)
+.then(result => {
   app.listen(3000);
 }).catch(err => {
   console.log(err);
