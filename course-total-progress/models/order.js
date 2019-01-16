@@ -9,7 +9,7 @@ const OrderSchema = new Schema({
       type: Schema.ObjectId,
       required: true
     },
-    name: {
+    email: {
       type: String,
       required: true,
       ref: 'User'

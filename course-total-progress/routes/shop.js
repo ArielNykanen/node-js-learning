@@ -2,14 +2,16 @@ const shopCtrl = require('../controllers/shop');
 const cartCtrl = require('../controllers/cart');
 const express = require('express');
 const router = express.Router();
+const isAuth = require('../middleware/is-auth');
+
 router.get('/',  shopCtrl.getIndexPage); 
 
-router.get('/cart', cartCtrl.getCart); 
-router.post('/cart/add-product', cartCtrl.postCart); 
-router.post('/cart/delete-item', cartCtrl.removeFromCart); 
+router.get('/cart', isAuth, cartCtrl.getCart); 
+router.post('/cart/add-product', isAuth, cartCtrl.postCart); 
+router.post('/cart/delete-item', isAuth, cartCtrl.removeFromCart); 
 
-router.post('/create-order', cartCtrl.createOrder); 
-router.get('/orders', cartCtrl.getOrders); 
+router.post('/create-order', isAuth, cartCtrl.createOrder); 
+router.get('/orders', isAuth, cartCtrl.getOrders); 
 
 
 router.get('/products', shopCtrl.getProducts); 
