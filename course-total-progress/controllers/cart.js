@@ -12,7 +12,6 @@ exports.getCart = (req, res, next) => {
         pageTitle: "In Cart",
         path: '/cart',
         products: products,
-        isAuthenticated: req.session.isLoggedIn
       });
     }).catch(err => console.log(err))
 }
@@ -101,7 +100,6 @@ exports.createOrder = (req, res, next) => {
         pageTitle: "In Cart",
         path: '/cart',
         products: result.cart.items,
-        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err))
@@ -114,7 +112,6 @@ exports.getOrders = (req, res, next) => {
         pageTitle: "In Orders",
         path: '/orders',
         orders: orders,
-        isAuthenticated: req.session.isLoggedIn
       });
     }).catch(err => console.log(err)
     );
