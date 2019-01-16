@@ -19,9 +19,9 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    // userId: req.session.user._id
+    // userId: req.user._id
     // you can save the intire objec (mongoose automatically will pick the id from it)
-    userId: req.session.user
+    userId: req.user
   });
   // save method comming from mongoose built in method
   product.save()
