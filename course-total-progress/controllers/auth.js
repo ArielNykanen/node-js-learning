@@ -46,13 +46,31 @@ exports.postSignUp = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
-  User.findById('5c3d80aba19a09a4b557935e')
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({ email: email })
     .then(user => {
-      req.session.isLoggedIn = true;
-      req.session.user = user;
-      req.session.save(err => {
-        res.redirect('/');
-      });
+      if (!user) {
+        return res.redirect('/login');
+      }
+      bcrypt.compare(password, user.password)
+      .then(doMatch => {
+        if (doMatch) {
+          req.session.isLoggedIn = true;
+          req.session.user = user;
+          return req.session.save(err => {
+            res.redirect('/');
+          });
+        }
+        res.redirect('/login');
+      })
+      .catch(err => {
+        console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth password validation, at line 58 reason: ' + err + ' ');
+        res.redirect('/login');
+
+      })
+    
     })
     .catch(err => console.log(err));
 }
