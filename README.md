@@ -24,7 +24,7 @@
  * **_Basic Authentication_**
    - _routes auth session-controlled login status on the server side_
  * **_Security_**
-   - _against CSRF attacks (csurf)_
+   - _protecting against CSRF attacks (csurf)_
    - _hashing passwords   (bcryptjs)_
  * **_Sending Emails_**
    - _nodemailer_
