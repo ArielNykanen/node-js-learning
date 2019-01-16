@@ -14,6 +14,7 @@
  * Working With Sequelize
  * Understanding MongoDB NoSQL Approach
  * Working With Mongoose
+ * Cookies/Sessions
 
 # Practices
 ## practice - 1
