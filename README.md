@@ -32,7 +32,7 @@
  * **_Password Reseting And Authorization_**
    - _generating unique token to prevent users from resetting other random user accounts_
     - _User Authorization - restricting user permissions_
- 
+
 
 # Practices
 ## practice - 1
@@ -60,3 +60,9 @@
   ### Templating Engines
   - ejs template engine
   - transferring/exporting data with post requests
+
+## Practice - 5
+  ### Validations with express-validator
+  - input validations 
+    - email validations
+    - pssword validations
