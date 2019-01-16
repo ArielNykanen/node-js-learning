@@ -15,6 +15,8 @@
  * Understanding MongoDB NoSQL Approach
  * Working With Mongoose
  * Cookies/Sessions
+ * Basic Authentication (routes auth session-controlled login status on the server side)
+ * Security against CSRF attacks (csurf), hashing passwords   (bcryptjs)
 
 # Practices
 ## practice - 1
