@@ -36,7 +36,7 @@ exports.postDeleteProduct = (req, res, next) => {
   const deletedProductId = req.body.productId;
   // findByIdAndDelete is mongoose method =>
   // automatically converting string to ObjectId()
-  Product.findByIdAndRemove(deletedProductId)
+  Product.deleteOne({ _id: deletedProductId, userId: req.user._id })
     .then(result => {
       console.log('Redirecting to admin/products...');
       res.redirect('/admin/products');
@@ -59,7 +59,7 @@ exports.getEditProduct = (req, res, next) => {
         path: '/admin/edit-product',
         prod: product,
         editing: editMode,
-  
+
       });
     })
     .catch(err => console.log(err));
@@ -73,17 +73,20 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDescription = req.body.description;
   // findById is mongoose method =>
   // automatically converting string to ObjectId()
-  Product.findById(prodId).then(product => {
-    product.title = updatedTitle;
-    product.price = updatedPrice;
-    product.description = updatedDescription;
-    product.imageUrl = updatedImageUrl;
-    // when using save on existing item it will automatically update the item
-    product.save();
-  })
-    .then(result => {
-      res.redirect('/admin/products');
-      console.log(result);
+  Product.findById(prodId)
+    .then(product => {
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect('/');
+      }
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDescription;
+      product.imageUrl = updatedImageUrl;
+      // when using save on existing item it will automatically update the item
+      product.save().then(result => {
+        res.redirect('/admin/products');
+        console.log(result);
+      });
     })
     .catch(err => console.log(err));
 }
@@ -91,7 +94,7 @@ exports.postEditProduct = (req, res, next) => {
 
 
 exports.getAdminProducts = (req, res, next) => {
-  Product.find()
+  Product.find({ userId: req.user._id })
     // will select data like filter
     //? .selet('title price -_id')
     // populate will fetch data with all the data information and not only the id object
@@ -103,7 +106,7 @@ exports.getAdminProducts = (req, res, next) => {
         pageTitle: "Admin Products",
         path: '/admin/products',
         hasProducts: products.length > 0,
-  
+
       });
     }).catch(
       err => console.log(err)
