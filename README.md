@@ -32,8 +32,9 @@
  * **_Password Reseting And Authorization_**
    - _generating unique token to prevent users from resetting other random user accounts_
     - _User Authorization - restricting user permissions_
-
-
+ * **_validations_** 
+    - Express-Validator Package
+ <!-- * **__** -->
 # Practices
 ## practice - 1
   ### Core NodeJs
