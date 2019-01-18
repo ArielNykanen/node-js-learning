@@ -22,7 +22,12 @@ exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    errorMessage: message
+    errorMessage: message,
+    oldInput: {
+      email: '',
+      password: '',
+    },
+    validationErrors: []
   });
 }
 
@@ -30,7 +35,7 @@ exports.newPassword = (req, res, next) => {
   const token = req.params.token;
   User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
     .then(user => {
-      if(!user) {
+      if (!user) {
         return res.redirect('/login');
       }
       let message = req.flash('error');
@@ -63,7 +68,13 @@ exports.getSignUp = (req, res, next) => {
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Sign-Up',
-    errorMessage: message
+    errorMessage: message,
+    oldInput: {
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    validationErrors: []
   });
 }
 exports.getReset = (req, res, next) => {
@@ -88,26 +99,32 @@ exports.postSignUp = (req, res, next) => {
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Sign-Up',
-      errorMessage: errors.array()[0].msg
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password,
+        confirmPassword: req.body.confirmPassword
+      },
+      validationErrors: errors.array(),
     });
   }
   bcrypt.hash(password, 12)
-        .then(hashedPassword => {
-          const user = new User({
-            email: email,
-            password: hashedPassword,
-            cart: { items: [] }
-          });
-          return user.save();
-        })
-        .then(result => {
-          res.redirect('/login');
-          return transporter.sendMail({
-            to: email,
-            from: 'shop@marker-supplies.com',
-            subject: 'Signup Succeeded!',
-            html: '<h1>You successfuly signed up!</h1>'
-          });
+    .then(hashedPassword => {
+      const user = new User({
+        email: email,
+        password: hashedPassword,
+        cart: { items: [] }
+      });
+      return user.save();
+    })
+    .then(result => {
+      res.redirect('/login');
+      return transporter.sendMail({
+        to: email,
+        from: 'shop@marker-supplies.com',
+        subject: 'Signup Succeeded!',
+        html: '<h1>You successfuly signed up!</h1>'
+      });
     })
     .catch(err => {
       console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth CTRL, at line 24 reason: ' + err + ' ');
@@ -120,17 +137,30 @@ exports.postLogin = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render('auth/login', {
+    return res.status(422).render('auth/login', {
       path: '/login',
       pageTitle: 'Login',
-      errorMessage: errors.array()[0].msg
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password,
+      },
+      validationErrors: errors.array(),
     });
   }
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        req.flash('error', 'Invalid Email or Password.')
-        return res.redirect('/login');
+        return res.status(422).render('auth/login', {
+          path: '/login',
+          pageTitle: 'Login',
+          errorMessage: 'Invalid email or password.',
+          oldInput: {
+            email: email,
+            password: password,
+          },
+          validationErrors: [],
+        });
       }
       bcrypt.compare(password, user.password)
         .then(doMatch => {
@@ -141,8 +171,16 @@ exports.postLogin = (req, res, next) => {
               res.redirect('/');
             });
           }
-          req.flash('error', 'Invalid Email or Password.')
-          res.redirect('/login');
+          return res.status(422).render('auth/login', {
+            path: '/login',
+            pageTitle: 'Login',
+            errorMessage: 'Invalid email or password.',
+            oldInput: {
+              email: email,
+              password: password,
+            },
+            validationErrors: [],
+          });
         })
         .catch(err => {
           console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth password validation, at line 58 reason: ' + err + ' ');
@@ -203,30 +241,31 @@ exports.postNewPassword = (req, res, next) => {
   const userId = req.body.userId;
   const passwordToken = req.body.passwordToken;
   let resetUser;
-  User.findOne({ resetToken: passwordToken, 
-    resetTokenExpiration: { $gt: Date.now() }, 
-    _id: userId 
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId
   })
-  .then(user => {
-    resetUser = user; 
-    console.log(resetUser);
-    
-    if (!user) {
-     return res.redirect('/login');
-    }
-    return bcrypt.hash(newPassword, 12)
-    .then(hashedPassword => {
-      resetUser.password = hashedPassword;
-      resetUser.resetToken = undefined;
-      resetUser.resetTokenExpiration = undefined;
-      return resetUser.save();
+    .then(user => {
+      resetUser = user;
+      console.log(resetUser);
+
+      if (!user) {
+        return res.redirect('/login');
+      }
+      return bcrypt.hash(newPassword, 12)
+        .then(hashedPassword => {
+          resetUser.password = hashedPassword;
+          resetUser.resetToken = undefined;
+          resetUser.resetTokenExpiration = undefined;
+          return resetUser.save();
+        })
+        .then(result => {
+          res.redirect('/login');
+        });
     })
-    .then(result => {
-      res.redirect('/login'); 
-    });
-  })
-  
-  .catch(err => {
-    console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth, at line 204 reason: ' + err + ' ');
-  })
+
+    .catch(err => {
+      console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth, at line 204 reason: ' + err + ' ');
+    })
 };

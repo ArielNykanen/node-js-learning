@@ -26,6 +26,8 @@ router.post('/signup',
     check('email')
       .isEmail()
       .withMessage('Please enter a valid email.')
+      .normalizeEmail()
+      .trim()
       .custom((value, { req }) => {
         // if (value === 'test@test.com') {
         //   throw new Error('Email is forbiden!');
@@ -45,6 +47,7 @@ router.post('/signup',
       'Please enter at least 5 characters long password and only alphanumeric!'
     )
       .isLength({ min: 5 })
+      .trim()
       .isAlphanumeric(),
     body('confirmPassword')
       .custom((value, { req }) => {
