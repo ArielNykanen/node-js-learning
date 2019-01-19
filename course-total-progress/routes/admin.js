@@ -13,9 +13,6 @@ router.post('/add-product',
   .trim(),
   body('description')
   .trim(),
-  body(['title', 'imageUrl', 'price', 'description'])
-  .isEmpty()
-
 ],
 isAuth, productsCtrl.postAddProduct);
 
