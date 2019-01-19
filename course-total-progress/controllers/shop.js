@@ -10,7 +10,11 @@ exports.getProducts = (req, res, next) => {
       hasProducts: products.length > 0,
       });
   }).catch(
-    err => console.log(err)
+    err => {
+      const error = new Error();
+      error.httpStatusCode = 500;
+      return next(error);
+    }
     );
 } 
 
@@ -28,7 +32,11 @@ exports.getProduct = (req, res, next) => {
     });
   })
   .catch(err => {
-    console.log(err);
+    {
+      const error = new Error();
+      error.httpStatusCode = 500;
+      return next(error);
+    }
   });
 }
 
@@ -43,6 +51,10 @@ exports.getIndexPage = (req, res, next) => {
       hasProducts: products.length > 0,
       });
   }).catch(
-    err => console.log(err) 
+    err => {
+      const error = new Error();
+      error.httpStatusCode = 500;
+      return next(error);
+    } 
     );
 }

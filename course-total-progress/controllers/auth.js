@@ -128,6 +128,9 @@ exports.postSignUp = (req, res, next) => {
     })
     .catch(err => {
       console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth CTRL, at line 24 reason: ' + err + ' ');
+      const error = new Error();
+      error.httpStatusCode = 500;
+      return next(error);
     });
 }
 
@@ -189,7 +192,11 @@ exports.postLogin = (req, res, next) => {
         })
 
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error();
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 }
 
 
@@ -232,6 +239,9 @@ exports.postReset = (req, res, next) => {
       })
       .catch(err => {
         console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth , at line 144 reason: ' + err + ' ');
+        const error = new Error();
+        error.httpStatusCode = 500;
+        return next(error);
       });
   });
 }
@@ -267,5 +277,8 @@ exports.postNewPassword = (req, res, next) => {
 
     .catch(err => {
       console.log('\x1b[31m%s\x1b[23m', 'Error!!!! from auth, at line 204 reason: ' + err + ' ');
+      const error = new Error();
+      error.httpStatusCode = 500;
+      return next(error);
     })
 };
