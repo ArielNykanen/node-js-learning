@@ -12,6 +12,7 @@ exports.getAddProduct = (req, res, next) => {
       price: '',
       description: '',
     },
+    errorMessage: null,
     validationErrors: [],
   })
 }
@@ -19,9 +20,23 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
   const errors = validationResult(req);
   const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
+  const image = req.file;
   const price = req.body.price;
   const description = req.body.description;
+  if (!image) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: "Add Products",
+      path: '/admin/add-product',
+      editing: false,
+      oldInput: {
+        title: title,
+        price: price,
+        description: description,
+      },
+      errorMessage:'Attached file is not image!',
+      validationErrors: [],
+    });
+  }
   if (!errors.isEmpty()) {
     return res.status(422).render('admin/edit-product', {
       pageTitle: "Add Products",
@@ -37,6 +52,7 @@ exports.postAddProduct = (req, res, next) => {
       validationErrors: errors.array(),
     });
   }
+  const imageUrl = image.path;
   const product = new Product({
     title: title, 
     price: price,
@@ -93,7 +109,7 @@ exports.getEditProduct = (req, res, next) => {
         prod: product,
         editing: editMode,
         validationErrors: [],
-
+        errorMessage: null,
       });
     })
     .catch(err => {
@@ -107,10 +123,11 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
-  const updatedImageUrl = req.body.imageUrl;
+  const image = req.file;
   const updatedDescription = req.body.description;
   // findById is mongoose method =>
   // automatically converting string to ObjectId()
+  
   Product.findById(prodId)
     .then(product => {
       if (product.userId.toString() !== req.user._id.toString()) {
@@ -119,11 +136,12 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDescription;
-      product.imageUrl = updatedImageUrl;
+      if (image) {
+        product.imageUrl = image.path;
+      }
       // when using save on existing item it will automatically update the item
       product.save().then(result => {
         res.redirect('/admin/products');
-        console.log(result);
       });
     })
     .catch(err => {
