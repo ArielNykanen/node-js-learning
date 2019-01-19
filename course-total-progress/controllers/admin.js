@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const { validationResult } = require('express-validator/check')
+const fileHelper = require('../util/file');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -79,9 +80,16 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const deletedProductId = req.body.productId;
+  Product.findById(deletedProductId)
+  .then(product => {
+    if (!product) {
+      return next(new Error('Product not found!'));
+    }
+    fileHelper.deleteFile(product.imageUrl);
+    return  Product.deleteOne({ _id: deletedProductId, userId: req.user._id });
+  })
   // findByIdAndDelete is mongoose method =>
   // automatically converting string to ObjectId()
-  Product.deleteOne({ _id: deletedProductId, userId: req.user._id })
     .then(result => {
       console.log('Redirecting to admin/products...');
       res.redirect('/admin/products');
@@ -137,6 +145,7 @@ exports.postEditProduct = (req, res, next) => {
       product.price = updatedPrice;
       product.description = updatedDescription;
       if (image) {
+        fileHelper.deleteFile(product.imageUrl);
         product.imageUrl = image.path;
       }
       // when using save on existing item it will automatically update the item
