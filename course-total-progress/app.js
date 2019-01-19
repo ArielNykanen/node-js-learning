@@ -16,7 +16,7 @@ const store = new MongoDBStore({
 });
 const csrfProtection = csrf();
 
-const errorCtrl = require('./controllers/errors')
+const errorCtrl = require('./controllers/errors') 
 const User = require('./models/user');
 
 app.set('view engine', 'ejs')
@@ -60,7 +60,11 @@ app.use('/admin', adminRoute);
 app.use(shopRoute);
 app.use(authRoute);
 
+app.get('/500', errorCtrl.get500) 
 app.use(errorCtrl.get404);
+app.use((error, req, res, next) => {
+res.redirect('/500');
+});
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 .then(result => {
