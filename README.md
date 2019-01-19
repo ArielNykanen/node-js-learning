@@ -31,9 +31,13 @@
    - _nodemailer-sendgrid-transport_
  * **_Password Reseting And Authorization_**
    - _generating unique token to prevent users from resetting other random user accounts_
-    - _User Authorization - restricting user permissions_
+    - _user Authorization - restricting user permissions_
  * **_validations_** 
-    - Express-Validator Package
+    - _express-validator package_
+ * **_Error Hndling_**
+      - _technical errors(wich are thrown)handled with try catch or then catch_
+      - _user validation client side errors_
+      - _Status Codes_
  <!-- * **__** -->
 # Practices
 ## practice - 1
