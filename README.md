@@ -38,6 +38,15 @@
       - _technical errors(wich are thrown)handled with try catch or then catch_
       - _user validation client side errors_
       - _Status Codes_
+ * **_File Upload And Download_**
+    - _handling files with multer package_
+    - _deleting files and adding files_
+    - _filtering files_
+    - _serving files statically_
+    - _downloading files with authentication_
+    - _restricting file access_
+    - _streaming and preloading data_
+    - _working with pdfkit package_
  <!-- * **__** -->
 # Practices
 ## practice - 1
