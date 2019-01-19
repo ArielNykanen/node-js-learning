@@ -6,6 +6,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
+const uuidv1 = require('uuid/v1');
 
 const MONGODB_URI = 'mongodb+srv://ariel:12131415@cluster0-4a0ak.mongodb.net/test?retryWrites=true';
 
@@ -15,8 +17,28 @@ const store = new MongoDBStore({
   collection: 'sessions'
 });
 const csrfProtection = csrf();
+const fileStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'images');
+  },
+  filename: function (req, file, cb) {
+    cb(null, uuidv1() + file.originalname);
+  },
+});
+const fileFilter = (req, file, cb) => {
+  const fileType = file.mimetype;
+  console.log(fileType);
 
-const errorCtrl = require('./controllers/errors') 
+  if (
+    fileType === 'image/jpg' ||
+    fileType === 'image/png' ||
+    fileType === 'image/jpeg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
+const errorCtrl = require('./controllers/errors');
 const User = require('./models/user');
 
 app.set('view engine', 'ejs')
@@ -25,7 +47,11 @@ const adminRoute = require('./routes/admin');
 const shopRoute = require('./routes/shop');
 const authRoute = require('./routes/auth');
 
+
+// storage: fileStorage, fileFilter 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
+app.use('/images',express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(
   {
@@ -41,7 +67,7 @@ app.use(flash());
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
-  } 
+  }
   User.findById(req.session.user._id)
     .then(user => {
       req.user = user;
@@ -60,15 +86,14 @@ app.use('/admin', adminRoute);
 app.use(shopRoute);
 app.use(authRoute);
 
-app.get('/500', errorCtrl.get500) 
+// app.get('/500', errorCtrl.get500) 
 app.use(errorCtrl.get404);
-app.use((error, req, res, next) => {
-res.redirect('/500');
-});
+// app.use((error, req, res, next) => {
+// res.redirect('/500');
+// });
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
-.then(result => {
-  app.listen(3000);
-}).catch(err => {
-  console.log(err);
-})
+  .then(result => {
+    app.listen(3000);
+  }).catch(err => {
+  })
