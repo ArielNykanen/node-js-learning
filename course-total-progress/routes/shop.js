@@ -19,6 +19,7 @@ router.get('/products', shopCtrl.getProducts);
 //  it will never reach products/something because it will handle it as the dynamic params.
 router.get('/products/:productId', shopCtrl.getProduct); 
 
+router.get('/orders/:orderId', isAuth, shopCtrl.getInvoice);
 
 module.exports = router;
   
