@@ -49,7 +49,8 @@
     - _working with pdfkit package_
  * **_Pagination_**
  * **_Understanding Async Requests_**
- <!-- * **__** -->
+ * **_Handling Payments_**
+     -_stripe package_
 
 # Practices
 ## practice - 1
