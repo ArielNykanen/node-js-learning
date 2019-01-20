@@ -9,6 +9,9 @@ const flash = require('connect-flash');
 const multer = require('multer');
 const uuidv1 = require('uuid/v1');
 
+const isAuth = require('./middleware/is-auth');
+const cartCtrl = require('./controllers/cart');
+
 const MONGODB_URI = 'mongodb+srv://ariel:12131415@cluster0-4a0ak.mongodb.net/test?retryWrites=true';
 
 const app = express();
@@ -61,36 +64,40 @@ app.use(session(
     store: store
   }));
 
-app.use(csrfProtection);
-app.use(flash());
-
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    return next();
-  }
-  User.findById(req.session.user._id)
+  app.use(flash());
+  
+  app.use((req, res, next) => {
+    if (!req.session.user) {
+      return next();
+    }
+    User.findById(req.session.user._id)
     .then(user => {
       req.user = user;
       next();
     })
     .catch(err => console.log(err));
-});
+  });
+  
+  app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    next();
+  }) 
+  app.post('/create-order', isAuth, cartCtrl.createOrder); 
 
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  csrfToken = req.csrfToken();
-  next();
-})
-
-app.use('/admin', adminRoute);
-app.use(shopRoute);
-app.use(authRoute);
-
-// app.get('/500', errorCtrl.get500) 
-app.use(errorCtrl.get404);
-// app.use((error, req, res, next) => {
-// res.redirect('/500');
-// });
+  app.use(csrfProtection);
+  app.use((req, res, next) => {
+    csrfToken = req.csrfToken(); 
+    next();
+  }) 
+  app.use('/admin', adminRoute);
+  app.use(shopRoute);
+  app.use(authRoute);
+  
+  // app.get('/500', errorCtrl.get500) 
+  app.use(errorCtrl.get404);
+  // app.use((error, req, res, next) => {
+    // res.redirect('/500');
+    // });
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
   .then(result => {
