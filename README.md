@@ -34,7 +34,7 @@
     - _user Authorization - restricting user permissions_
  * **_validations_** 
     - _express-validator package_
- * **_Error Hndling_**
+ * **_Error Handling_**
       - _technical errors(wich are thrown)handled with try catch or then catch_
       - _user validation client side errors_
       - _Status Codes_
