@@ -47,7 +47,8 @@
     - _restricting file access_
     - _streaming and preloading data_
     - _working with pdfkit package_
- <!-- * **__** -->
+ * **_Pagination_**
+  <!-- * **__** -->
 # Practices
 ## practice - 1
   ### Core NodeJs
