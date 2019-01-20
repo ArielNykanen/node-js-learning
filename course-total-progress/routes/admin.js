@@ -23,6 +23,6 @@ router.get('/edit-product/:productId', isAuth, productsCtrl.getEditProduct)
 
 router.post('/edit-product', isAuth, productsCtrl.postEditProduct)
 
-router.post('/delete-product', isAuth, productsCtrl.postDeleteProduct)
+router.delete('/product/:productId', isAuth, productsCtrl.deleteProduct)
 
 module.exports = router;

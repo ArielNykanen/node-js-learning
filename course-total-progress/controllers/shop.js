@@ -62,7 +62,7 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndexPage = (req, res, next) => {
-  // for (let i = 0; i < 250; i++) {
+  // for (let i = 0; i < 2; i++) {
   //   const product = new Product({
   //     title: 'test', 
   //     price: Math.ceil(Math.random() * 255),
