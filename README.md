@@ -48,7 +48,9 @@
     - _streaming and preloading data_
     - _working with pdfkit package_
  * **_Pagination_**
-  <!-- * **__** -->
+ * **_Understanding Async Requests_**
+ <!-- * **__** -->
+
 # Practices
 ## practice - 1
   ### Core NodeJs
