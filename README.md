@@ -81,6 +81,12 @@
 
 ## Practice - 5
   ### Validations with express-validator
-  - input validations 
-    - email validations
-    - pssword validations
+  -  input validations 
+  - email validations
+  - pssword validations
+
+## Practice - 6
+  ### Working with REST APIs - Basics
+  - creating basic REST API project
+  - handling CORS errors
+  - sending requests/responses
