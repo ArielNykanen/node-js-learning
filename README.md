@@ -50,7 +50,7 @@
  * **_Pagination_**
  * **_Understanding Async Requests_**
  * **_Handling Payments_**
-     -_stripe package_
+     - _stripe package_
 
 # Practices
 ## practice - 1
