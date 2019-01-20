@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 const { validationResult } = require('express-validator/check')
 const fileHelper = require('../util/file');
+const ITEMS_PER_PAGE = 20;
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -163,19 +164,34 @@ exports.postEditProduct = (req, res, next) => {
 
 
 exports.getAdminProducts = (req, res, next) => {
-  Product.find({ userId: req.user._id })
-    // will select data like filter
+  const page = +req.query.page || 1;
+  let totalItems;
+  Product
+  .find()
+  .countDocuments()
+  .then(numberProducts => {
+    totalItems = numberProducts;
+    return Product.find({ userId: req.user._id })
+        // will select data like filter
     //? .selet('title price -_id')
     // populate will fetch data with all the data information and not only the id object
     // next arguments will sellect/filter only the object keys as defined 
     //? .populate('userId', 'name')
-    .then((products) => {
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE);
+  })
+  .then((products) => {
       res.render('admin/products', {
         prods: products,
         pageTitle: "Admin Products",
         path: '/admin/products',
         hasProducts: products.length > 0,
-
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
       });
     }).catch(
       err => {
