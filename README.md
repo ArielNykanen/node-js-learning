@@ -57,6 +57,10 @@
      - _uploading files_
      - _authentication with json web tokens JWT_
      - _signing users_
+ * **_Async Await_**
+ * **_Websockets_**
+     - _using socket.io_
+
  
 
 
