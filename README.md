@@ -51,6 +51,14 @@
  * **_Understanding Async Requests_**
  * **_Handling Payments_**
      - _stripe package_
+ * **_REST API_**
+     - _understatnding frontend setup_
+     - _sending/fetching data from server side_
+     - _uploading files_
+     - _authentication with json web tokens JWT_
+     - _signing users_
+ 
+
 
 # Practices
 ## practice - 1
